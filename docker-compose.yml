@@ -1,0 +1,15 @@
+version: '2'
+services:
+   react:
+      image: node:8.12.0
+      working_dir: /usr/src/app/
+      environment:
+         - "TZ=America/Guayaquil"
+      expose:
+          - "80"
+      ports:
+          - "80:80"
+      volumes:
+         - ./codigo_fuente/redux:/usr/src/app/
+      #command: [ "npm", "install" ]
+      command: [ "npm", "run", "build:dev" ]
