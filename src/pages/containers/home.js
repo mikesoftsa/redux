@@ -6,11 +6,15 @@ import ModalContainer from "../../widgets/containers/modal";
 import Modal from "../../widgets/components/modal";
 import HandleError from "../../error/containers/handle-error";
 import VideoPlayer from "../../player/containers/video-player";
+import { connect } from 'react-redux';
+
+import { List as list } from 'immutable';
+import search from "../../widgets/containers/search";
 
 class Home extends Component {
-    state = {
+   /* state = {
         modalVisible: false,
-    }
+    }*/
     handleOpenModal=(media)=>{
         this.setState({
             modalVisible: true,
@@ -29,11 +33,12 @@ class Home extends Component {
                     <Related/>
 
                     <Categories
-                        categories={this.props.data.categories}
+                        categories={this.props.categories}
                         handleOpenModal={this.handleOpenModal}
+                        search={this.props.search}
                     />
                     {
-                        this.state.modalVisible &&
+                        this.modal.get('visibility') &&
                         <ModalContainer>
                             <Modal
                                 handleClick={this.handleCloseModal}
@@ -52,4 +57,26 @@ class Home extends Component {
         )
     }
 }
-export default Home;
+
+function mapStateToProps(state, props) {
+    const categories = state.get('data').get('categories').map((categoryId)=>{
+        return state.get('data').get('entities').get('categories').get(categoryId);
+    });
+    let searhResults = list();
+    const search = state.get('data').get('search');
+
+    if(search){
+        const mediaList = state.get('data').get('entities').get('media');
+        searhResults = mediaList.filter((item)=>(
+            item.get('author').toLowerCase().includes(search.toLowerCase())
+        )).toList();
+    }
+
+    return {
+        categories: categories,
+        search: searhResults,
+        modal: state.get('modal'),
+    }
+}
+
+export default connect(mapStateToProps)(Home);

@@ -2,26 +2,40 @@ import React from 'react';
 import {render} from 'react-dom';
 //import PlayList from "./src/playlist/components/playlist";
 //import Media from "./src/playlist/components/media";
-import data from '../../src/api.json'
+//import data from '../../src/api.json'
 import Home from "../pages/containers/home";
 
 import { Provider } from 'react-redux';
 
 import { createStore } from 'redux';
 
-const initialState = {
+import reducer from '../reducers/index'
+import { Map as map } from 'immutable';
+
+//import data from '../schemas/index'
+
+//console.log(normalizedData);
+
+/*const initialState = {
     data: {
-        ...data
+        //...data,
+        entities: data.entities,
+        categories: data.result.categories,
+        search:[],
+    },
+    modal:{
+        visibility: false,
+        mediaId: null
     }
-};
+};*/
 
 const store = createStore(
-    (state) => state,
-    initialState,
+    reducer,
+    map(),
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 
-console.log(store.getState())
+//console.log(store.getState())
 
 const app = document.getElementById('home-container')
 
@@ -31,5 +45,5 @@ const app = document.getElementById('home-container')
 
 render(
 <Provider store={store}>
-    <p>hola mundo</p>
+   <Home />
 </Provider>, app)
