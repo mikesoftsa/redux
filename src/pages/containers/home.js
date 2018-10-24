@@ -11,20 +11,24 @@ import { connect } from 'react-redux';
 import { List as list } from 'immutable';
 import search from "../../widgets/containers/search";
 
+import { openModal, closeModal } from "../../actions/index";
+
 class Home extends Component {
    /* state = {
         modalVisible: false,
     }*/
-    handleOpenModal=(media)=>{
-        this.setState({
+    handleOpenModal=(id)=>{
+        /*this.setState({
             modalVisible: true,
             media
-        })
+        })*/
+        this.props.dispatch(openModal(id))
     }
     handleCloseModal= (event)=>{
-        this.setState({
+        /*this.setState({
             modalVisible:false,
-        })
+        })*/
+        this.props.dispatch(closeModal())
     }
     render() {
         return(
@@ -38,15 +42,16 @@ class Home extends Component {
                         search={this.props.search}
                     />
                     {
-                        this.modal.get('visibility') &&
+                        this.props.modal.get('visibility') &&
                         <ModalContainer>
                             <Modal
                                 handleClick={this.handleCloseModal}
                             >
                                 <VideoPlayer
                                     autoplay={true}
-                                    src={this.state.media.src}
-                                    title={this.state.media.title}
+                                    id={ this.props.modal.get('mediaId')}
+                                    //src={this.state.media.src}
+                                    //title={this.state.media.title}
                                 />
                             </Modal>
                         </ModalContainer>
