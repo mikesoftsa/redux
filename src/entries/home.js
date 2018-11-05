@@ -13,7 +13,9 @@ import reducer from '../reducers/index'
 import { Map as map } from 'immutable';
 
 import logger from 'redux-logger';
+import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
+
 
 //import data from '../schemas/index'
 
@@ -58,7 +60,7 @@ const store = createStore(
     composeWithDevTools(
         applyMiddleware(
             logger,
-            logger_
+            thunk
         )
     )
     //window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
