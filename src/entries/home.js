@@ -12,6 +12,9 @@ import { createStore, applyMiddleware } from 'redux';
 import reducer from '../reducers/index'
 import { Map as map } from 'immutable';
 
+import logger from 'redux-logger';
+import { composeWithDevTools } from 'redux-devtools-extension';
+
 //import data from '../schemas/index'
 
 //console.log(normalizedData);
@@ -41,7 +44,7 @@ import { Map as map } from 'immutable';
    }
 }*/
 
-const logger = ({ getState, dispath}) => next => action => {
+const logger_ = ({ getState, dispath}) => next => action => {
     console.log('estae es mi viejo estado', getState().toJS());
     console.log('vamos a enviar esta aciion', action);
     const value =  next(action);
@@ -52,7 +55,12 @@ const logger = ({ getState, dispath}) => next => action => {
 const store = createStore(
     reducer,
     map(),
-    applyMiddleware(logger)
+    composeWithDevTools(
+        applyMiddleware(
+            logger,
+            logger_
+        )
+    )
     //window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 
